@@ -1,3 +1,5 @@
 .idea/
 venv/
 HW1_packet_sniffer/cap_packets/
+HW1_packet_sniffer/config.py
+HW1_packet_sniffer/__pycache__/
