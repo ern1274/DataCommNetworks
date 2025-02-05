@@ -1,10 +1,8 @@
-from scapy.all import *
 import argparse
 import os.path
 from HW1_packet_sniffer import config
 import pyshark
-import libpcap
-conf.use_pcap = True
+
 
 # This is the absolute path to the cap_packets folder
 # This is needed due to a bug where optional arguments
@@ -12,21 +10,98 @@ conf.use_pcap = True
 # the cap_packets folder, absolute path prevents this
 cap_folder_name = config.cap_folder_name
 
+malformed_pkts = 0
+
 def file_exists(file_path):
     file_path = os.path.join(cap_folder_name, file_path)
     if not os.path.exists(file_path):
         raise argparse.ArgumentTypeError(f"'{file_path}' does not exist")
     return file_path
 
-def extract_headers(pkt):
-    headers = []
-    # Heavily depends on the packet having at least 3 layers/headers:
-    # Ether header, IP header and Protocol header
-    for i in range(2,-1, -1):
-        header = pkt.getlayer(i)
-        header.remove_payload()
-        headers.insert(0,header.show(True))
-    return headers
+def setup_parser():
+    parser = argparse.ArgumentParser(description="Open Packet Capture File, "
+                                                 "filter packets and Display"
+                                                 " Packet Headers")
+    parser.add_argument("file_name",
+                        help="Captured Packet File name",
+                        type=file_exists)
+    parser.add_argument("-c", help="Number of packets to show",
+                        type=int)
+    setup_type_args(parser)
+    setup_proto_args(parser)
+    return parser
+
+def setup_type_args(parser):
+    type_group = parser.add_argument_group("Type",
+                                           "Mutually Exclusive types to filter packets by")
+    target_type = type_group.add_mutually_exclusive_group()
+    # "Show packets using a specific host, port or net address"
+    target_type.add_argument("-host",
+                             help="Show packets using a specific host")
+    target_type.add_argument("-port",
+                             help="Show packets using a specific port")
+    target_type.add_argument("-net",
+                             help="Show packets using a specific net address")
+    return
+
+def setup_proto_args(parser):
+    proto_group = parser.add_argument_group("Protocol",
+                                            "Mutually Exclusive protocols "
+                                            "to filter packets by")
+    protocol = proto_group.add_mutually_exclusive_group()
+    protocol.add_argument("-ip", nargs='?', const="")
+    protocol.add_argument("-tcp", nargs='?', const="")
+    protocol.add_argument("-udp", nargs='?', const="")
+    protocol.add_argument("-icmp", nargs='?', const="")
+    return
+
+def filter_pkt_type(args, pkt):
+    try:
+        layer = pkt[1]
+        if args.host is not None:
+            if layer.src == args.host or layer.dst == args.host:
+                return pkt
+            else:
+                return None
+        elif args.port is not None:
+            if (pkt[2].srcport == args.port or
+                    pkt[2].dstport == args.port):
+                return pkt
+            else:
+                return None
+        elif args.net is not None:
+            if layer.src == args.net or layer.dst == args.net:
+                return pkt
+            else:
+                return None
+        return pkt
+    except AttributeError:
+        return None
+
+def filter_pkt_proto(args, pkt):
+    if args.ip is not None:
+        return pkt
+        #if pkt.transport_layer == "ip":
+        #    return pkt
+        #else:
+        #    return None
+    elif args.tcp is not None:
+        if pkt.transport_layer == "TCP":
+            return pkt
+        else:
+            return None
+    elif args.udp is not None:
+        #print("Here with: " , pkt.transport_layer)
+        if pkt.transport_layer == "UDP":
+            return pkt
+        else:
+            return None
+    elif args.icmp is not None:
+        if pkt.transport_layer == "ICMP":
+            return pkt
+        else:
+            return None
+    return pkt
 
 def extract_eth_header(header):
     #print(header.field_names)
@@ -37,7 +112,7 @@ def extract_eth_header(header):
     return line
 
 def extract_ip_header(header):
-    #print(header.field_names)
+    print(header.field_names)
     line = ""
     line += "Version: " + header.version + "\n"
     line += "Header Length: " + header.hdr_len + "\n"
@@ -54,96 +129,29 @@ def extract_ip_header(header):
     return line
 
 def main():
-
-    parser = argparse.ArgumentParser(description="Open Packet Capture File, "
-                                                 "filter packets and Display"
-                                                 " Packet Headers")
-    parser.add_argument("file_name",
-                        help="Captured Packet File name",
-                        type=file_exists)
-    parser.add_argument("-c", help="Number of packets to show",
-                        type=int)
-
-    type_group = parser.add_argument_group("Type",
-                              "Mutually Exclusive types to filter packets by")
-    target_type = type_group.add_mutually_exclusive_group()
-    # "Show packets using a specific host, port or net address"
-    target_type.add_argument("-host",
-                             help="Show packets using a specific host")
-    target_type.add_argument("-port",
-                             help="Show packets using a specific port")
-    target_type.add_argument("-net",
-                             help="Show packets using a specific net address")
-
-    proto_group = parser.add_argument_group("Protocol",
-                                           "Mutually Exclusive protocols "
-                                           "to filter packets by")
-    protocol = proto_group.add_mutually_exclusive_group()
-    protocol.add_argument("-ip",
-                          help= "IPV4 or IPV6 address",
-                          nargs='?',
-                          const="")
-    protocol.add_argument("-tcp",
-                          nargs='?',
-                          const="")
-    protocol.add_argument("-udp",
-                          nargs='?',
-                          const="")
-    protocol.add_argument("-icmp",
-                          nargs='?',
-                          const="")
-
+    parser = setup_parser()
     args = parser.parse_args()
-
-    sniff_args = {'offline': args.file_name}
-    if args.c is not None:
-        sniff_args['count'] = args.c
-
-    filter = ""
-    and_flag = False
-    for arg in vars(args):
-        value = getattr(args, arg)
-        if arg != 'file_name' and arg != 'c' and value is not None:
-            if and_flag:
-                filter += " and " + arg + " " + value
-            else:
-                filter += arg + " " + value
-                and_flag = True
-        print(arg, " " , value)
-
-    sniff_args['filter'] = filter
-    #cap_file = pyshark.FileCapture(input_file=args.file_name,)
+    cap_file = pyshark.FileCapture(input_file=args.file_name)
     #print(cap_file)
-    #cap_file = sniff(offline=args.file_name)
-    cap_file = sniff(**sniff_args)
+    line_break = "*"*100
     pkt_num = 1
-
+    total_pkts_iterated = 0
     for pkt in cap_file:
-        print("Packet Number: ", pkt_num)
-        ether_header = pkt.eth
-        ip_header = pkt.ip
-        protocol_header = pkt.transport_layer
-        headers = extract_headers(pkt)
-        ether_header= headers[0]
-        ip_header = headers[1]
-        protocol_header = headers[2]
-        print(ether_header)
-        print(ip_header)
-        print(protocol_header)
-        '''print(vars(pkt))
-        ether_header = "Length: " + pkt.length + "\n" + extract_eth_header(ether_header)
-        print("Ether Header: ")
-        print(ether_header)
-        ip_header = extract_ip_header(ip_header)
-        print("IP Header: ")
-        print(ip_header)
-        print("Protocol: ")
-        print(protocol_header)
+        total_pkts_iterated += 1
+        if len(pkt.layers) > 3 and (filter_pkt_proto(args,pkt) and
+                filter_pkt_type(args,pkt)):
+            print(line_break,"\nPacket Number: ", pkt_num)
+            #print(pkt.pretty_print())
+            print(pkt[0])
+            print(pkt[1])
+            print(pkt[2])
+        else:
+            continue
         if args.c is not None and pkt_num >= args.c:
             break
-        '''
-        pkt_num += 1
 
+        pkt_num += 1
+    print(total_pkts_iterated)
 
 
 
