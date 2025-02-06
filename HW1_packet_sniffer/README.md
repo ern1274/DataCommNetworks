@@ -25,4 +25,35 @@ Compile and run module Instructions:
 * Linux/Mac:
   * `python <path-to-file>/pktsniffer.py <captured-packet-file-name> [-options]`
 
+-Options:
+* `-c [num-of-packets]`
+* Mutually Exclusive Type Qualifiers:
+    * `-host [address]`
+    * `-port [portnum]`
+    * `-net [netaddress]`
+* Mutually Exclusive Proto Qualifiers:
+    * `-ip`
+    * `-tcp`
+    * `-udp`
+    * `-icmp`
+
 Examples of Command Line Usage:
+
+* `python pktsniffer.py pkt1.pcapng`
+
+* `python pktsniffer.py pkt1.pcapng -c 10`
+
+* `python pktsniffer.py pkt1.pcapng -host 192.168.0.1`
+
+* `python pktsniffer.py pkt1.pcapng -c 10 -port 17580 -tcp`
+
+* `python pktsniffer.py pkt1.pcapng -host 192.168.0.1 -ip`
+
+* `python pktsniffer.py pkt1.pcapng -net 192.168.0.1`
+
+* `python pktsniffer.py pkt1.pcapng -tcp`
+
+* `python pktsniffer.py pkt1.pcapng -udp`
+
+* `python pktsniffer.py pkt1.pcapng -icmp`
+
