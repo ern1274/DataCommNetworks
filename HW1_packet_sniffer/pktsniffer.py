@@ -1,13 +1,14 @@
 import argparse
 import os.path
-from HW1_packet_sniffer import config
 import pyshark
 
 
 # This is the absolute path to the cap_packets folder
+# Provided by config.py
 # This is needed due to a bug where optional arguments
 # if added rendered the program incapable of finding
 # the cap_packets folder, absolute path prevents this
+import config
 cap_folder_name = config.cap_folder_name
 
 def file_exists(file_path):
