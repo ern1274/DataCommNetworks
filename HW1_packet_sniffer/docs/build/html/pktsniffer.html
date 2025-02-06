@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+
+<html lang="en" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Packet Sniffer Module &#8212; Packet Sniffer 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=279e0f84" />
+    <script src="_static/documentation_options.js?v=2709fde1"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Packet Sniffer documentation" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Packet Sniffer documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Packet Sniffer 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Packet Sniffer Module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="packet-sniffer-module">
+<h1>Packet Sniffer Module<a class="headerlink" href="#packet-sniffer-module" title="Link to this heading">¶</a></h1>
+<p>This is the main module for packet sniffer homework.</p>
+<dl class="py function" id="module-pktsniffer">
+<dt class="sig sig-object py" id="pktsniffer.file_exists">
+<span class="sig-prename descclassname"><span class="pre">pktsniffer.</span></span><span class="sig-name descname"><span class="pre">file_exists</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pktsniffer.file_exists" title="Link to this definition">¶</a></dt>
+<dd><p>Checks if a file exists based on the file path provided</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – String of the file path</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>file_path with cap_folder_name prepended if valid,
+else raises ArgumentTypeError</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pktsniffer.filter_pkt_proto">
+<span class="sig-prename descclassname"><span class="pre">pktsniffer.</span></span><span class="sig-name descname"><span class="pre">filter_pkt_proto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pktsniffer.filter_pkt_proto" title="Link to this definition">¶</a></dt>
+<dd><p>verifies if packet abides by the proto qualifier filter criteria</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>ArgumentParser</em>) – ArgumentParser object with parsed arguments</p></li>
+<li><p><strong>pkt</strong> (<em>Pyshark Packet</em>) – Pyshark packet to verify</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>pkt if verified, else None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pyshark Packet or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pktsniffer.filter_pkt_type">
+<span class="sig-prename descclassname"><span class="pre">pktsniffer.</span></span><span class="sig-name descname"><span class="pre">filter_pkt_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pktsniffer.filter_pkt_type" title="Link to this definition">¶</a></dt>
+<dd><p>verifies if packet abides by the type qualifier filter criteria</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>args</strong> (<em>ArgumentParser</em>) – ArgumentParser object with parsed arguments</p></li>
+<li><p><strong>pkt</strong> (<em>Pyshark Packet</em>) – Pyshark packet to verify</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>pkt if verified, else None</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Pyshark Packet or None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pktsniffer.setup_parser">
+<span class="sig-prename descclassname"><span class="pre">pktsniffer.</span></span><span class="sig-name descname"><span class="pre">setup_parser</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pktsniffer.setup_parser" title="Link to this definition">¶</a></dt>
+<dd><p>Sets up the argument parser for the program</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>parser, an initialized ArgumentParser object</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ArgumentParser</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pktsniffer.setup_proto_args">
+<span class="sig-prename descclassname"><span class="pre">pktsniffer.</span></span><span class="sig-name descname"><span class="pre">setup_proto_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pktsniffer.setup_proto_args" title="Link to this definition">¶</a></dt>
+<dd><p>Sets up mutually exclusive argument group for packet protocol filtering</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>ArgumentParser</em>) – ArgumentParser object to set up argument group</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None: parser is modified in place</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pktsniffer.setup_type_args">
+<span class="sig-prename descclassname"><span class="pre">pktsniffer.</span></span><span class="sig-name descname"><span class="pre">setup_type_args</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pktsniffer.setup_type_args" title="Link to this definition">¶</a></dt>
+<dd><p>Sets up mutually exclusive argument group for packet type filtering</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>parser</strong> (<em>ArgumentParser</em>) – ArgumentParser object to set up argument group</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>None: parser is modified in place</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Packet Sniffer Module</a><ul>
+<li><a class="reference internal" href="#pktsniffer.file_exists"><code class="docutils literal notranslate"><span class="pre">file_exists()</span></code></a></li>
+<li><a class="reference internal" href="#pktsniffer.filter_pkt_proto"><code class="docutils literal notranslate"><span class="pre">filter_pkt_proto()</span></code></a></li>
+<li><a class="reference internal" href="#pktsniffer.filter_pkt_type"><code class="docutils literal notranslate"><span class="pre">filter_pkt_type()</span></code></a></li>
+<li><a class="reference internal" href="#pktsniffer.setup_parser"><code class="docutils literal notranslate"><span class="pre">setup_parser()</span></code></a></li>
+<li><a class="reference internal" href="#pktsniffer.setup_proto_args"><code class="docutils literal notranslate"><span class="pre">setup_proto_args()</span></code></a></li>
+<li><a class="reference internal" href="#pktsniffer.setup_type_args"><code class="docutils literal notranslate"><span class="pre">setup_type_args()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">Packet Sniffer documentation</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pktsniffer.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<search id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="Related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="Packet Sniffer documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Packet Sniffer 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Packet Sniffer Module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Ethan Nunez.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    </div>
+  </body>
+</html>

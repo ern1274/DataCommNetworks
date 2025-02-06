@@ -3,3 +3,10 @@ venv/
 HW1_packet_sniffer/cap_packets/
 HW1_packet_sniffer/config.py
 HW1_packet_sniffer/__pycache__/
+HW1_packet_sniffer/docs/build/doctrees
+HW1_packet_sniffer/docs/build/_sources
+HW1_packet_sniffer/docs/build/_static
+HW1_packet_sniffer/docs/source/_templates
+HW1_packet_sniffer/docs/source/_static
+HW1_packet_sniffer/docs/Makefile
+HW1_packet_sniffer/docs/make.bat

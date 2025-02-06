@@ -10,15 +10,27 @@ import pyshark
 # the cap_packets folder, absolute path prevents this
 cap_folder_name = config.cap_folder_name
 
-malformed_pkts = 0
-
 def file_exists(file_path):
+    """Checks if a file exists based on the file path provided
+
+    :param file_path: String of the file path
+    :type file_path: str
+    :return: file_path with cap_folder_name prepended if valid,
+             else raises ArgumentTypeError
+    :rtype: str
+    :meta public:
+    """
     file_path = os.path.join(cap_folder_name, file_path)
     if not os.path.exists(file_path):
         raise argparse.ArgumentTypeError(f"'{file_path}' does not exist")
     return file_path
 
 def setup_parser():
+    """Sets up the argument parser for the program
+
+    :return: parser, an initialized ArgumentParser object
+    :rtype: ArgumentParser
+    """
     parser = argparse.ArgumentParser(description="Open Packet Capture File, "
                                                  "filter packets and Display"
                                                  " Packet Headers")
@@ -32,10 +44,17 @@ def setup_parser():
     return parser
 
 def setup_type_args(parser):
+    """Sets up mutually exclusive argument group for packet type filtering
+
+    :param parser: ArgumentParser object to set up argument group
+    :type parser: ArgumentParser
+    :return: None: parser is modified in place
+    :rtype: None
+    """
     type_group = parser.add_argument_group("Type",
-                                           "Mutually Exclusive types to filter packets by")
+                                           "Mutually Exclusive "
+                                           "types to filter packets by")
     target_type = type_group.add_mutually_exclusive_group()
-    # "Show packets using a specific host, port or net address"
     target_type.add_argument("-host",
                              help="Show packets using a specific host")
     target_type.add_argument("-port",
@@ -45,6 +64,13 @@ def setup_type_args(parser):
     return
 
 def setup_proto_args(parser):
+    """Sets up mutually exclusive argument group for packet protocol filtering
+
+    :param parser: ArgumentParser object to set up argument group
+    :type parser: ArgumentParser
+    :return: None: parser is modified in place
+    :rtype: None
+    """
     proto_group = parser.add_argument_group("Protocol",
                                             "Mutually Exclusive protocols "
                                             "to filter packets by")
@@ -56,6 +82,15 @@ def setup_proto_args(parser):
     return
 
 def filter_pkt_type(args, pkt):
+    """verifies if packet abides by the type qualifier filter criteria
+
+    :param args: ArgumentParser object with parsed arguments
+    :type args: ArgumentParser
+    :param pkt: Pyshark packet to verify
+    :type pkt: Pyshark Packet
+    :return: pkt if verified, else None
+    :rtype: Pyshark Packet or None
+    """
     try:
         layer = pkt[1]
         if args.host is not None:
@@ -79,19 +114,23 @@ def filter_pkt_type(args, pkt):
         return None
 
 def filter_pkt_proto(args, pkt):
+    """verifies if packet abides by the proto qualifier filter criteria
+
+    :param args: ArgumentParser object with parsed arguments
+    :type args: ArgumentParser
+    :param pkt: Pyshark packet to verify
+    :type pkt: Pyshark Packet
+    :return: pkt if verified, else None
+    :rtype: Pyshark Packet or None
+    """
     if args.ip is not None:
         return pkt
-        #if pkt.transport_layer == "ip":
-        #    return pkt
-        #else:
-        #    return None
     elif args.tcp is not None:
         if pkt.transport_layer == "TCP":
             return pkt
         else:
             return None
     elif args.udp is not None:
-        #print("Here with: " , pkt.transport_layer)
         if pkt.transport_layer == "UDP":
             return pkt
         else:
@@ -103,36 +142,10 @@ def filter_pkt_proto(args, pkt):
             return None
     return pkt
 
-def extract_eth_header(header):
-    #print(header.field_names)
-    line = ""
-    line += "Destination: " + header.dst + "\n"
-    line += "Source: " + header.src + "\n"
-    line += "Ethertype: " + header.type + "\n"
-    return line
-
-def extract_ip_header(header):
-    print(header.field_names)
-    line = ""
-    line += "Version: " + header.version + "\n"
-    line += "Header Length: " + header.hdr_len + "\n"
-    line += "Type of Service: " + header.dsfield + "\n"
-    line += "Total length: " + header.len + "\n"
-    line += "Identification: " + header.id + "\n"
-    line += "Flags: " + header.flags + "\n"
-    line += "Fragment Offset: " + header.frag_offset + "\n"
-    line += "Time to live: : " + header.ttl + "\n"
-    line += "Protocol: " + header.proto + "\n"
-    line += "Header Checksum: " + header.checksum + "\n"
-    line += "Source IP: " + header.src + "\n"
-    line += "Destination IP: " + header.dst + "\n"
-    return line
-
 def main():
     parser = setup_parser()
     args = parser.parse_args()
     cap_file = pyshark.FileCapture(input_file=args.file_name)
-    #print(cap_file)
     line_break = "*"*100
     pkt_num = 1
     total_pkts_iterated = 0
@@ -141,7 +154,6 @@ def main():
         if len(pkt.layers) > 3 and (filter_pkt_proto(args,pkt) and
                 filter_pkt_type(args,pkt)):
             print(line_break,"\nPacket Number: ", pkt_num)
-            #print(pkt.pretty_print())
             print(pkt[0])
             print(pkt[1])
             print(pkt[2])
@@ -151,12 +163,9 @@ def main():
             break
 
         pkt_num += 1
-    print(total_pkts_iterated)
+    print("Iterated over ",total_pkts_iterated, " packets")
 
 
 
-
-
-
-
-main()
+if __name__ == "__main__":
+    main()
