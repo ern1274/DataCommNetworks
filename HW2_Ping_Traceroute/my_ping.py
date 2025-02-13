@@ -1,6 +1,5 @@
 import argparse
-
-import scapy.all
+import time
 from scapy.all import *
 
 def setup_parser():
@@ -27,23 +26,31 @@ def setup_parser():
 
     return parser
 
+def form_pkt(args):
+    ip_layer = IP()
+    icmp_layer = ICMP()
+    padding = Padding()
+    if args.s - 28 > 0:
+        padding.load = '\x00' * (args.s - len(ip_layer))
+    pkt = ip_layer / icmp_layer / padding
+    return pkt
+
 def main():
     parser = setup_parser()
     args = parser.parse_args()
     print(args)
 
-    ip_layer = IP()
-    icmp_layer = ICMP()
-    padding = Padding()
-    # 28 is default length of both ip and icmp layers
-    if args.s - 28 > 0:
-        padding.load = '\x00' * (args.s - 28)
-    packet = ip_layer / icmp_layer / padding
+    pkt = form_pkt(args)
+    print(pkt)
 
-    print(packet)
-    print(len(packet))
-    answer = sr1(packet)
-    print(answer)
+    sr_args = {'verbose': 2, 'inter': args.i}
+    if args.t is not None:
+        sr_args['stop_filter'] = lambda p: time.time() - start_time > args.t
+    if args.c is not None:
+        sr_args['count'] = args.c
+
+    start_time = time.time()
+    srloop(pkt,**sr_args)
 
 if __name__ == "__main__":
     main()
