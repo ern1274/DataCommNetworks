@@ -31,7 +31,7 @@ def form_pkt(args):
     icmp_layer = ICMP()
     padding = Padding()
     if args.s - 28 > 0:
-        padding.load = '\x00' * (args.s - len(ip_layer))
+        padding.load = '\x00' * (args.s - 28)
     pkt = ip_layer / icmp_layer / padding
     return pkt
 
@@ -46,6 +46,7 @@ def main():
     sr_args = {'verbose': 2, 'inter': args.i}
     if args.t is not None:
         sr_args['stop_filter'] = lambda p: time.time() - start_time > args.t
+        sr_args['timeout'] = args.t
     if args.c is not None:
         sr_args['count'] = args.c
 
