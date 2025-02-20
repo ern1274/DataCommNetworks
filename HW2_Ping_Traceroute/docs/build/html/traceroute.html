@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Traceroute Module &#8212; Ping Traceroute 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css?v=8fc2db88" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Ping Module" href="ping.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ping.html" title="Ping Module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Ping Traceroute 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Traceroute Module</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <section id="traceroute-module">
+<h1>Traceroute Module<a class="headerlink" href="#traceroute-module" title="Permalink to this heading">¶</a></h1>
+<p>This is the main module for Traceroute portion of homework</p>
+<span class="target" id="module-my_traceroute"></span><dl class="py function">
+<dt class="sig sig-object py" id="my_traceroute.form_pkt">
+<span class="sig-prename descclassname"><span class="pre">my_traceroute.</span></span><span class="sig-name descname"><span class="pre">form_pkt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_traceroute.form_pkt" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forms packet for traceroute program by using raw sockets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pkt, a crafted packet using scapy raw sockets</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>scapy.layers.inet.IP / scapy.layers.inet.ICMP</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="my_traceroute.setup_parser">
+<span class="sig-prename descclassname"><span class="pre">my_traceroute.</span></span><span class="sig-name descname"><span class="pre">setup_parser</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#my_traceroute.setup_parser" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up the argument parser for the traceroute program</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>parser, an initialized ArgumentParser object</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ArgumentParser</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="my_traceroute.trace">
+<span class="sig-prename descclassname"><span class="pre">my_traceroute.</span></span><span class="sig-name descname"><span class="pre">trace</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkt</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_break</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#my_traceroute.trace" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performs traceroute with given packet and args</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pkt</strong> (<em>scapy.layers.inet.IP / scapy.layers.inet.ICMP</em>) – A packet formed with scapy raw sockets</p></li>
+<li><p><strong>args</strong> (<em>ArgumentParser</em>) – ArgumentParser object with parsed arguments</p></li>
+<li><p><strong>line_break</strong> (<em>str</em>) – string object used for printing purposes</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>probe_addresses, sets of IP addresses traceroute touches</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of sets</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>failed_probes, array tracking # of probes answered each hop</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Array of int</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">Traceroute Module</a><ul>
+<li><a class="reference internal" href="#my_traceroute.form_pkt"><code class="docutils literal notranslate"><span class="pre">form_pkt()</span></code></a></li>
+<li><a class="reference internal" href="#my_traceroute.setup_parser"><code class="docutils literal notranslate"><span class="pre">setup_parser()</span></code></a></li>
+<li><a class="reference internal" href="#my_traceroute.trace"><code class="docutils literal notranslate"><span class="pre">trace()</span></code></a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="ping.html"
+                          title="previous chapter">Ping Module</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/traceroute.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="ping.html" title="Ping Module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Ping Traceroute 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">Traceroute Module</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+    &#169; Copyright 2025, Ethan Nunez.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
+    </div>
+  </body>
+</html>

@@ -1,6 +1,9 @@
 import argparse
 import time
-from scapy.all import *
+from scapy.layers.inet import IP, ICMP
+from scapy.packet import Padding
+from scapy.sendrecv import srloop
+
 
 def setup_parser():
     """Sets up the argument parser for the ping program
@@ -26,7 +29,32 @@ def setup_parser():
 
     return parser
 
+def form_args(args, start_time):
+    """Forms packet for ping program by using raw sockets
+
+        :param args: ArgumentParser object with parsed arguments
+        :type args: ArgumentParser
+        :param start_time: Time object meant to represent start of ping process
+        :type start_time: float
+        :return: sr_args, kwargs for srloop() in main function
+        :rtype: Dictionary
+    """
+    sr_args = {'verbose': 2, 'inter': args.i}
+    if args.t is not None:
+        sr_args['stop_filter'] = lambda p: time.time() - start_time > args.t
+        sr_args['timeout'] = args.t
+    if args.c is not None:
+        sr_args['count'] = args.c
+    return sr_args
+
 def form_pkt(args):
+    """Forms packet for ping program by using raw sockets
+
+        :param args: ArgumentParser object with parsed arguments
+        :type args: ArgumentParser
+        :return: pkt, a crafted packet using scapy raw sockets
+        :rtype: scapy.layers.inet.IP / scapy.layers.inet.ICMP / scapy.packet.Padding
+    """
     ip_layer = IP()
     icmp_layer = ICMP()
     padding = Padding()
@@ -38,18 +66,10 @@ def form_pkt(args):
 def main():
     parser = setup_parser()
     args = parser.parse_args()
-    print(args)
 
     pkt = form_pkt(args)
-    print(pkt)
-
-    sr_args = {'verbose': 2, 'inter': args.i}
-    if args.t is not None:
-        sr_args['stop_filter'] = lambda p: time.time() - start_time > args.t
-        sr_args['timeout'] = args.t
-    if args.c is not None:
-        sr_args['count'] = args.c
-
+    start_time = time.time()
+    sr_args = form_args(args, start_time)
     start_time = time.time()
     srloop(pkt,**sr_args)
 

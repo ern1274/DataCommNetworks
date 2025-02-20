@@ -10,3 +10,12 @@ HW1_packet_sniffer/docs/source/_templates
 HW1_packet_sniffer/docs/source/_static
 HW1_packet_sniffer/docs/Makefile
 HW1_packet_sniffer/docs/make.bat
+
+HW2_Ping_Traceroute/__pycache__/
+HW2_Ping_Traceroute/docs/build/doctrees
+HW2_Ping_Traceroute/docs/build/_sources
+HW2_Ping_Traceroute/docs/build/_static
+HW2_Ping_Traceroute/docs/source/_templates
+HW2_Ping_Traceroute/docs/source/_static
+HW2_Ping_Traceroute/docs/Makefile
+HW2_Ping_Traceroute/docs/make.bat

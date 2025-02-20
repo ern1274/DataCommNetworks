@@ -1,5 +1,7 @@
 import argparse
-from scapy.all import *
+from scapy.layers.inet import IP, ICMP
+from scapy.sendrecv import srloop
+
 
 def setup_parser():
     """Sets up the argument parser for the traceroute program
@@ -21,30 +23,42 @@ def setup_parser():
     return parser
 
 def form_pkt():
+    """Forms packet for traceroute program by using raw sockets
+
+        :return: pkt, a crafted packet using scapy raw sockets
+        :rtype: scapy.layers.inet.IP / scapy.layers.inet.ICMP
+    """
     ip_layer = IP(dst="google.com")
     icmp_layer = ICMP()
     pkt = ip_layer / icmp_layer
     return pkt
 
-def main():
-    parser = setup_parser()
-    args = parser.parse_args()
-    line_break = "*" * 50
+def trace(pkt, args, line_break):
+    """Performs traceroute with given packet and args
 
-    pkt = form_pkt()
+        :param pkt: A packet formed with scapy raw sockets
+        :type pkt: scapy.layers.inet.IP / scapy.layers.inet.ICMP
+        :param args: ArgumentParser object with parsed arguments
+        :type args: ArgumentParser
+        :param line_break: string object used for printing purposes
+        :type line_break: str
+        :return: probe_addresses, sets of IP addresses traceroute touches
+        :rtype: Array of sets
+        :return: failed_probes, array tracking # of probes answered each hop
+        :rtype: Array of int
+    """
     ttl = 30
     timeout = 20
     flag = False
     probe_addresses = []
     failed_probes = []
-    for i in range(1,ttl):
+    for i in range(1, ttl):
         pkt['IP'].ttl = i
-
         print(line_break)
         print("TTL set to ", i)
-
         probe_addr = set()
-        ans, unans = srloop(pkt,timeout=timeout, verbose=0, count=args.q)
+
+        ans, unans = srloop(pkt, timeout=timeout, verbose=0, count=args.q)
         if ans is not None:
             probe_num = 1
             for s, r in ans:
@@ -59,6 +73,15 @@ def main():
         failed_probes.append(len(unans))
         if flag:
             break
+    return probe_addresses, failed_probes
+
+def main():
+    parser = setup_parser()
+    args = parser.parse_args()
+    line_break = "*" * 50
+
+    pkt = form_pkt()
+    probe_addresses, failed_probes = trace(pkt, args, line_break)
 
     if args.n or args.S:
         index = 0
