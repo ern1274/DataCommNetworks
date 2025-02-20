@@ -1,0 +1,35 @@
+commit b3d39507eb5ecb6b80597266fd707be9f0df04aa
+Author: Ethan Nunez <ern1274@rit.edu>
+Date:   Thu Feb 20 10:52:00 2025 -0500
+
+    Added requirements and README for HW2
+
+commit 977d8f1b27d4aa28481de01acaa54edaff2b2bac
+Author: Ethan Nunez <ern1274@rit.edu>
+Date:   Thu Feb 20 09:38:52 2025 -0500
+
+    Set up sphinx documentation and updated gitignore
+
+commit 13f0e832dc95e5774d9017d2f2ae565ac3b9362b
+Author: Ethan Nunez <ern1274@rit.edu>
+Date:   Tue Feb 18 15:48:04 2025 -0500
+
+    Finished implementation for traceroute and ping assignments
+
+commit f36f1ad148f0a74ef66b9b5503ba657f0abf1a3b
+Author: Ethan Nunez <ern1274@rit.edu>
+Date:   Thu Feb 13 16:31:39 2025 -0500
+
+    Finished ping program with some questions and set up basic functionality of traceroute
+
+commit 1f675eb619910de842b0e565305446908167eba8
+Author: Ethan Nunez <ern1274@rit.edu>
+Date:   Wed Feb 12 21:12:46 2025 -0500
+
+    Set up homework files and tested out basic ping command with scapy
+
+commit 596cf9fd16d32472341bfb6d3c3907f23f74c699
+Author: Ethan Nunez <ern1274@rit.edu>
+Date:   Mon Feb 10 12:56:29 2025 -0500
+
+    Setup homework 2
