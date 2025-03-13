@@ -1,7 +1,7 @@
 import zlib
 
 def make_checksum(data):
-    return zlib.crc32(data)
+    return zlib.crc32(data).to_bytes(8,'big',signed=True)
 
 def make_receiver_payload(seq_num, msg):
     seq_bytes = seq_num.to_bytes(4, byteorder='big', signed=True)
@@ -17,6 +17,11 @@ def convert_sender_payload(data):
 def verify_integrity(sent_chksum, data):
     chksum = make_checksum(data)
     return sent_chksum == chksum
+
+def make_packet(seq_num, msg):
+    payload = make_receiver_payload(seq_num, msg)
+    chksum = make_checksum(payload)
+    return chksum+payload
 
 class Receiver:
     packets = []
@@ -53,36 +58,42 @@ class Receiver:
 
     def run_receiver(self):
         print("Started Server")
+        try:
+            while True:
+                data, address = self.soc.recvfrom(4096)
+                chksum = data[:8]
+                data = data[8:]
+                if verify_integrity(chksum, data):
+                    send_seq, msg = convert_sender_payload(data)
+                    print("Server Received seq:" + str(send_seq)
+                          + " msg: " + msg + " from " + str(address))
+                    if send_seq == -1:
+                        print("Client is done, sending ack")
+                        self.soc.sendto(make_packet(send_seq, "ACK"), address)
+                        print(self.get_packets())
+                        self.soc.settimeout(15)
+                        continue
 
-        while True:
-            data, address = self.soc.recvfrom(4096)
-            if verify_integrity():
-                send_seq, msg = convert_sender_payload(data)
-                print("Server Received seq:" + str(send_seq)
-                    + " msg: " + msg + " from " + str(address))
-                if send_seq == -1:
-                    print("Client is done, sending ack")
-                    payload = make_receiver_payload(send_seq, "ACK")
-                    self.soc.sendto(payload, address)
-                    print(self.get_packets())
-                    continue
+                    if self.base_seq == -1:
+                        print("Server Establishing base and max seq as " + str(send_seq))
+                        self.base_seq = send_seq
+                        self.max_seq = send_seq
+                        self.packets = [None]
 
-                if self.base_seq == -1:
-                    print("Server Establishing base and max seq as " + str(send_seq))
-                    self.base_seq = send_seq
-                    self.max_seq = send_seq
-                    self.packets = [None]
+                    if send_seq < self.base_seq:
+                        print("Server rebasing packets where base_seq: " + str(self.base_seq) + " to " + str(send_seq))
+                        self.rebase_packets(send_seq, msg)
+                    elif send_seq >= self.max_seq:
+                        print("Server expanding packets from max_seq: " + str(self.max_seq) + " to " + str(send_seq))
+                        self.add_packet(send_seq, msg, True)
+                    elif send_seq < self.max_seq and self.packets[send_seq - self.base_seq] is None:
+                        self.add_packet(send_seq, msg, False)
 
-                if send_seq < self.base_seq:
-                    print("Server rebasing packets where base_seq: " + str(self.base_seq) + " to " + str(send_seq))
-                    self.rebase_packets(send_seq, msg)
-                elif send_seq >= self.max_seq:
-                    print("Server expanding packets from max_seq: " + str(self.max_seq) + " to "+ str(send_seq))
-                    self.add_packet(send_seq, msg, True)
-                elif send_seq < self.max_seq and self.packets[send_seq - self.base_seq] is None:
-                    self.add_packet(send_seq, msg, False)
+                    self.soc.sendto(make_packet(send_seq, "ACK"), address)
+                else:
+                    print("Corrupted packet, discarding")
+        except:
+            print("Getting no more messages, exiting receiver")
+        return
 
-
-                payload = make_receiver_payload(send_seq, "ACK")
-                self.soc.sendto(payload, address)
 
