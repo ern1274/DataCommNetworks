@@ -1,120 +1,87 @@
+import random
 import socket
+import zlib
 import sys
 from multiprocessing import Process
 from scapy.layers.inet import IP, UDP
 from scapy.sendrecv import sr1, send, sniff
 
-ip = '127.0.0.1'
-port = 5000
-def run_sender():
+from HW3_RDT_Protocol.sender_rdt import Sender
+from HW3_RDT_Protocol.receiver_rdt import Receiver
+
+
+
+def run_sender(ip, port):
     print("Started Client")
     soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    #soc.settimeout(1)
-
-    seq_num = 1
-    ack_bit = False
-    msg = "Hello There"
-
-
-    #while True:
-    while seq_num < 50:
-        # T1/T4
-        payload = make_sender_payload(seq_num, ack_bit, msg)
-        soc.sendto(payload, (ip, port))
-
-        soc.settimeout(1)
-        try:
-            data, address = soc.recvfrom(4096)
-            recv_seq, recv_msg = convert_receiver_payload(data)
-            print("Receiver Sequence Number: " + str(recv_seq))
-            print("Client Received: " + recv_msg + " from " + str(address))
-            #T2/T5
-            if not (verify_integrity() and recv_seq == seq_num and recv_msg == 'ACK'):
-                continue
-            #T3/T6
-            else:
-                seq_num += 1
-                ack_bit = not ack_bit
-        except socket.timeout:
-            print("Timed out")
-            continue
-
-def make_sender_payload(seq_num, pkt_bit, msg):
-    pkt_bit = int(pkt_bit)
-    seq_bytes = seq_num.to_bytes(4, byteorder='big')
-    pkt_bytes = pkt_bit.to_bytes(4, byteorder='big')
-    msg_bytes = msg.encode()
-    payload = seq_bytes + pkt_bytes + msg_bytes
-    return payload
-
-def convert_sender_payload(data):
-    send_seq = int.from_bytes(data[:4], byteorder='big')
-    pkt_bit = int.from_bytes(data[4:8], byteorder='big')
-    msg = data[8:].decode()
-    return send_seq, pkt_bit, msg
+    sender = Sender(soc, ip, port)
+    print(sender.ip)
+    print(sender.port)
+    print(sender.base_seq)
+    data = [i for i in range(15)]
+    sender.arrange_pkts(data)
+    sender.run_sender()
 
 
-def run_receiver():
-    print("Started Server")
+def run_receiver(ip, port):
+    #print("Started Server")
     soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     soc.bind((ip,port))
-    #soc.settimeout(1)
-    seq_num = -1
-    ack_bit = False
+    receiver = Receiver(soc)
+    print(receiver.packets)
+    print(receiver.base_seq)
+    print(receiver.max_seq)
+    receiver.run_receiver()
 
+
+def run_router(ip, sender_port, receiver_port):
+    print('Started Router')
+    router_soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    router_soc.bind((ip, sender_port))
     while True:
-        data, address = soc.recvfrom(4096)
-        send_seq, sender_bit, msg = convert_sender_payload(data)
-        print("Client Sequence Number: " + str(send_seq))
-        print("Client Packet bit: " + str(sender_bit))
-        print("Server Received: " + msg + " from " + str(address))
-        if seq_num == -1: # Not yet established
-            seq_num = send_seq
-
-        # T1/T4
-        if verify_integrity() and sender_bit == int(ack_bit):
-            # Add data to buffer
-            msg = "ACK"
-            payload = make_receiver_payload(seq_num, msg)
-            soc.sendto(payload, address)
-            seq_num += 1
-            ack_bit = not ack_bit
-
-        # T2/T5
-        elif verify_integrity() and sender_bit != int(ack_bit):
-            msg = "ACK"
-            payload = make_receiver_payload(send_seq, msg)
-            soc.sendto(payload, address)
-        #T3/T6
-        else:
-            msg = "ACK"
-            payload = make_receiver_payload(seq_num-1, msg)
-            soc.sendto(payload, address)
+        sender_data, sender_address = router_soc.recvfrom(4096)
+        if random.randint(0,100) > 80:
+            print("Lost packet from sender to receiver")
+            continue
+        router_soc.sendto(sender_data, (ip,receiver_port))
+        # add chance of corruption but learn the checksum first
+        receiver_data, receiver_address = router_soc.recvfrom(4096)
+        if random.randint(0,100) > 80:
+            print("Lost packet from receiver to sender")
+            continue
+        router_soc.sendto(receiver_data, sender_address)
 
 
-def make_receiver_payload(seq_num, msg):
-    seq_bytes = seq_num.to_bytes(4, byteorder='big')
-    msg_bytes = msg.encode()
-    payload = seq_bytes + msg_bytes
-    return payload
-
-def convert_receiver_payload(data):
-    send_seq = int.from_bytes(data[:4], byteorder='big')
-    msg = data[4:].decode()
-    return send_seq, msg
-
-def verify_integrity():
-    return True
-
-def run_router():
     return
 
-def main():
-    receiver = Process(target=run_receiver)
+def test_with_router():
+    ip = '127.0.0.1'
+    sender_port = 5000
+    receiver_port = 5001
+
+    router = Process(target=run_router, args=[ip, sender_port, receiver_port])
+    router.start()
+
+    receiver = Process(target=run_receiver, args=[ip, receiver_port])
     receiver.start()
 
-    sender = Process(target=run_sender)
+    sender = Process(target=run_sender, args=[ip, sender_port])
     sender.start()
+
+def test():
+    ip = '127.0.0.1'
+    sender_port = 5000
+    receiver_port = 5000
+
+    receiver = Process(target=run_receiver, args=[ip, receiver_port])
+    receiver.start()
+
+    sender = Process(target=run_sender, args=[ip, sender_port])
+    sender.start()
+
+def main():
+    #test()
+    test_with_router()
 
 if __name__ == "__main__":
     main()
