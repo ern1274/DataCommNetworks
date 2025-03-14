@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Receiver Module &#8212; Reliable Data Transfer Protocol 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reliable Data Transfer Module" href="rdt.html" />
+    <link rel="prev" title="Sender Module" href="sender.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="receiver-module">
+<h1>Receiver Module<a class="headerlink" href="#receiver-module" title="Permalink to this heading">¶</a></h1>
+<p>This is the main module for the Receiver Module and Class</p>
+<span class="target" id="module-receiver_rdt"></span><dl class="py class">
+<dt class="sig sig-object py" id="receiver_rdt.Receiver">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">receiver_rdt.</span></span><span class="sig-name descname"><span class="pre">Receiver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">soc</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#receiver_rdt.Receiver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Receiver, a class with defined behavior to receive data from a sender</p>
+<dl>
+<dt>Attributes:</dt><dd><p>packets: Array of received decoded data</p>
+<p>soc: socket that receiver uses to bind and receive data over
+ip: ip address to receive data from
+port: port number to receive data from
+base_seq: the lowest sequence number to index by
+max_seq: the highest sequence number known to the receiver</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="receiver_rdt.Receiver.add_packet">
+<span class="sig-name descname"><span class="pre">add_packet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expand_pkts</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#receiver_rdt.Receiver.add_packet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given seq_num, data add data to Receiver packets,
+if expand_pkts is True, seq_num is bigger than self.max_seq.
+In this event, add entries until seq_num is reached and input data</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seq_num</strong> (<em>int</em>) – sequence number of data packet</p></li>
+<li><p><strong>data</strong> (<em>String</em>) – decoded data</p></li>
+<li><p><strong>expand_pkts</strong> (<em>Boolean</em>) – true if seq_num &gt;= self.max_seq</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="receiver_rdt.Receiver.base_seq">
+<span class="sig-name descname"><span class="pre">base_seq</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></em><a class="headerlink" href="#receiver_rdt.Receiver.base_seq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="receiver_rdt.Receiver.clear_packets">
+<span class="sig-name descname"><span class="pre">clear_packets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#receiver_rdt.Receiver.clear_packets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clears Receiver object packets to emptiness</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="receiver_rdt.Receiver.get_packets">
+<span class="sig-name descname"><span class="pre">get_packets</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#receiver_rdt.Receiver.get_packets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Retrieves Receiver object packets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>self.packets</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="receiver_rdt.Receiver.max_seq">
+<span class="sig-name descname"><span class="pre">max_seq</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">-1</span></em><a class="headerlink" href="#receiver_rdt.Receiver.max_seq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="receiver_rdt.Receiver.packets">
+<span class="sig-name descname"><span class="pre">packets</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[]</span></em><a class="headerlink" href="#receiver_rdt.Receiver.packets" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="receiver_rdt.Receiver.rebase_packets">
+<span class="sig-name descname"><span class="pre">rebase_packets</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#receiver_rdt.Receiver.rebase_packets" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given seq_num, data add data to Receiver packets,
+this function is called if seq_num is smaller than self.base_seq
+where self.packets is modified to make seq_num the new self.base_seq
+and populate decoded data in self.packets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seq_num</strong> (<em>int</em>) – sequence number of data packet</p></li>
+<li><p><strong>data</strong> (<em>String</em>) – decoded data</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="receiver_rdt.Receiver.run_receiver">
+<span class="sig-name descname"><span class="pre">run_receiver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#receiver_rdt.Receiver.run_receiver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Waits for data from self.soc, verifies data and populates data in
+self.packets using class methods.
+Exits 15 seconds of no activity
+after sender/client sends a sequence number of -1 is sent</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="receiver_rdt.convert_sender_payload">
+<span class="sig-prename descclassname"><span class="pre">receiver_rdt.</span></span><span class="sig-name descname"><span class="pre">convert_sender_payload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#receiver_rdt.convert_sender_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Decodes packet payload to retrieve sequence number and message of packet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Bytes</em>) – sequence of Bytes to decode</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>send_seq, sequence number of packet</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bytes</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>msg, data from packet</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>String</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="receiver_rdt.make_checksum">
+<span class="sig-prename descclassname"><span class="pre">receiver_rdt.</span></span><span class="sig-name descname"><span class="pre">make_checksum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#receiver_rdt.make_checksum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forms checksum from data using crc32 function from zlib library</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>Bytes</em>) – sequence of Bytes to calculate checksum</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>checksum of data</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="receiver_rdt.make_packet">
+<span class="sig-prename descclassname"><span class="pre">receiver_rdt.</span></span><span class="sig-name descname"><span class="pre">make_packet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#receiver_rdt.make_packet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forms packet by combining calculated checksum and formed payload</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seq_num</strong> (<em>int</em>) – int to convert to bytes</p></li>
+<li><p><strong>msg</strong> (<em>String</em>) – characters to encode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>payload, sequence of bytes containing seq_num and msg</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="receiver_rdt.make_receiver_payload">
+<span class="sig-prename descclassname"><span class="pre">receiver_rdt.</span></span><span class="sig-name descname"><span class="pre">make_receiver_payload</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seq_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msg</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#receiver_rdt.make_receiver_payload" title="Permalink to this definition">¶</a></dt>
+<dd><p>Forms packet payload by encoding sequence number and message of packet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>seq_num</strong> (<em>int</em>) – int to convert to bytes</p></li>
+<li><p><strong>msg</strong> (<em>String</em>) – characters to encode</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>payload, sequence of bytes containing seq_num and msg</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Bytes</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="receiver_rdt.verify_integrity">
+<span class="sig-prename descclassname"><span class="pre">receiver_rdt.</span></span><span class="sig-name descname"><span class="pre">verify_integrity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sent_chksum</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#receiver_rdt.verify_integrity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Verifies checksum from received packet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sent_chksum</strong> (<em>Bytes</em>) – received checksum with length of 8 bytes</p></li>
+<li><p><strong>data</strong> (<em>Bytes</em>) – sequence of bytes to calculate checksum with</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>if sent_chksum is the exact same as calculated checksum</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Boolean</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Reliable Data Transfer Protocol</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="sender.html">Sender Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Receiver Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#receiver_rdt.Receiver"><code class="docutils literal notranslate"><span class="pre">Receiver</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#receiver_rdt.Receiver.add_packet"><code class="docutils literal notranslate"><span class="pre">Receiver.add_packet()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receiver_rdt.Receiver.base_seq"><code class="docutils literal notranslate"><span class="pre">Receiver.base_seq</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receiver_rdt.Receiver.clear_packets"><code class="docutils literal notranslate"><span class="pre">Receiver.clear_packets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receiver_rdt.Receiver.get_packets"><code class="docutils literal notranslate"><span class="pre">Receiver.get_packets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receiver_rdt.Receiver.max_seq"><code class="docutils literal notranslate"><span class="pre">Receiver.max_seq</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receiver_rdt.Receiver.packets"><code class="docutils literal notranslate"><span class="pre">Receiver.packets</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receiver_rdt.Receiver.rebase_packets"><code class="docutils literal notranslate"><span class="pre">Receiver.rebase_packets()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#receiver_rdt.Receiver.run_receiver"><code class="docutils literal notranslate"><span class="pre">Receiver.run_receiver()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#receiver_rdt.convert_sender_payload"><code class="docutils literal notranslate"><span class="pre">convert_sender_payload()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#receiver_rdt.make_checksum"><code class="docutils literal notranslate"><span class="pre">make_checksum()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#receiver_rdt.make_packet"><code class="docutils literal notranslate"><span class="pre">make_packet()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#receiver_rdt.make_receiver_payload"><code class="docutils literal notranslate"><span class="pre">make_receiver_payload()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#receiver_rdt.verify_integrity"><code class="docutils literal notranslate"><span class="pre">verify_integrity()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rdt.html">Reliable Data Transfer Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="file_rdt.html">File Reliable Data Transfer Module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="sender.html" title="previous chapter">Sender Module</a></li>
+      <li>Next: <a href="rdt.html" title="next chapter">Reliable Data Transfer Module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2025, Ethan Nunez.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/receiver.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Reliable Data Transfer Module &#8212; Reliable Data Transfer Protocol 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=6625fa76" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js?v=e031e9a9"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=4825356b"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="File Reliable Data Transfer Module" href="file_rdt.html" />
+    <link rel="prev" title="Receiver Module" href="receiver.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="reliable-data-transfer-module">
+<h1>Reliable Data Transfer Module<a class="headerlink" href="#reliable-data-transfer-module" title="Permalink to this heading">¶</a></h1>
+<p>This is the main module for part 1 portion of Homework 3</p>
+<span class="target" id="module-reliable_data_transfer"></span><dl class="py function">
+<dt class="sig sig-object py" id="reliable_data_transfer.run_receiver">
+<span class="sig-prename descclassname"><span class="pre">reliable_data_transfer.</span></span><span class="sig-name descname"><span class="pre">run_receiver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#reliable_data_transfer.run_receiver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up Receiver object to receive data from ip and port
+and puts received data in order within Receiver object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ip</strong> – ip address to receive data from</p></li>
+<li><p><strong>port</strong> – port number to receive data from</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reliable_data_transfer.run_router">
+<span class="sig-prename descclassname"><span class="pre">reliable_data_transfer.</span></span><span class="sig-name descname"><span class="pre">run_router</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sender_port</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">receiver_port</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#reliable_data_transfer.run_router" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up a socket intended to middleman between
+Sender object and Receiver object,
+adding chances of packet loss and corruption to test receiver and sender
+interaction with lost packets and corrupted packets</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ip</strong> – ip address to get data from</p></li>
+<li><p><strong>sender_port</strong> – port to receive data from sender</p></li>
+<li><p><strong>receiver_port</strong> – port to receive data from receiver</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reliable_data_transfer.run_sender">
+<span class="sig-prename descclassname"><span class="pre">reliable_data_transfer.</span></span><span class="sig-name descname"><span class="pre">run_sender</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ip</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">port</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#reliable_data_transfer.run_sender" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up Sender object with ip and port with predefined data
+and runs Sender function to send data to ip and port</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ip</strong> – ip address to send data to</p></li>
+<li><p><strong>port</strong> – port number to send data to</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reliable_data_transfer.test">
+<span class="sig-prename descclassname"><span class="pre">reliable_data_transfer.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#reliable_data_transfer.test" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up receiver and sender processes to interact with each other</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="reliable_data_transfer.test_with_router">
+<span class="sig-prename descclassname"><span class="pre">reliable_data_transfer.</span></span><span class="sig-name descname"><span class="pre">test_with_router</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#reliable_data_transfer.test_with_router" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets up router, receiver and sender processes to run simultaneously
+to allow interaction between all three processes</p>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Reliable Data Transfer Protocol</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="sender.html">Sender Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="receiver.html">Receiver Module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reliable Data Transfer Module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#reliable_data_transfer.run_receiver"><code class="docutils literal notranslate"><span class="pre">run_receiver()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reliable_data_transfer.run_router"><code class="docutils literal notranslate"><span class="pre">run_router()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reliable_data_transfer.run_sender"><code class="docutils literal notranslate"><span class="pre">run_sender()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reliable_data_transfer.test"><code class="docutils literal notranslate"><span class="pre">test()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#reliable_data_transfer.test_with_router"><code class="docutils literal notranslate"><span class="pre">test_with_router()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="file_rdt.html">File Reliable Data Transfer Module</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="receiver.html" title="previous chapter">Receiver Module</a></li>
+      <li>Next: <a href="file_rdt.html" title="next chapter">File Reliable Data Transfer Module</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2025, Ethan Nunez.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/rdt.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
