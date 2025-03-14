@@ -11,7 +11,7 @@ def make_receiver_payload(seq_num, msg):
 
 def convert_sender_payload(data):
     send_seq = int.from_bytes(data[:4], byteorder='big', signed=True)
-    msg = data[8:].decode()
+    msg = data[4:].decode()
     return send_seq, msg
 
 def verify_integrity(sent_chksum, data):
@@ -65,8 +65,8 @@ class Receiver:
                 data = data[8:]
                 if verify_integrity(chksum, data):
                     send_seq, msg = convert_sender_payload(data)
-                    print("Server Received seq:" + str(send_seq)
-                          + " msg: " + msg + " from " + str(address))
+                    print("Server Received seq: " + str(send_seq))
+                    print("The message is: " + msg)
                     if send_seq == -1:
                         print("Client is done, sending ack")
                         self.soc.sendto(make_packet(send_seq, "ACK"), address)
