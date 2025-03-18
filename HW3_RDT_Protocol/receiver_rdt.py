@@ -145,7 +145,6 @@ class Receiver:
         after sender/client sends a sequence number of -1 is sent
 
         """
-        print("Started Server")
         try:
             while True:
                 data, address = self.soc.recvfrom(4096)

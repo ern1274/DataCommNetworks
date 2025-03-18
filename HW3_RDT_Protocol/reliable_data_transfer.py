@@ -17,11 +17,7 @@ def run_sender(ip, port):
     print("Started Client")
     soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sender = Sender(soc, ip, port)
-
-    print(sender.ip)
-    print(sender.port)
-    print(sender.base_seq)
-    data = [str(i) for i in range(15)]
+    data = [str(i) for i in range(30)]
     sender.arrange_pkts(data)
     sender.run_sender()
     print("Done with client")
@@ -34,13 +30,10 @@ def run_receiver(ip, port):
     :param ip: ip address to receive data from
     :param port: port number to receive data from
     """
-    #print("Started Server")
+    print("Started Server")
     soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     soc.bind((ip,port))
     receiver = Receiver(soc)
-    print(receiver.packets)
-    print(receiver.base_seq)
-    print(receiver.max_seq)
     receiver.run_receiver()
 
 
@@ -61,10 +54,11 @@ def run_router(ip, sender_port, receiver_port):
     try:
         while True:
             sender_data, sender_address = router_soc.recvfrom(4096)
-            if random.randint(0,100) > 90:
+            '''if random.randint(0,100) > 90:
                 print("Lost packet from sender to receiver")
                 continue
-            elif random.randint(0, 100) > 80:
+            '''
+            if random.randint(0, 100) > 80:
                 print("Corrupted pkt from sender to receiver")
 
                 corrupted_msg = "corr".encode()
@@ -73,11 +67,25 @@ def run_router(ip, sender_port, receiver_port):
                 sender_data = corrupted_chksum + corrupted_msg
                 router_soc.sendto(sender_data, (ip, receiver_port))
                 continue
+
+
             router_soc.sendto(sender_data, (ip,receiver_port))
             receiver_data, receiver_address = router_soc.recvfrom(4096)
-            if random.randint(0,100) > 80:
+            '''if random.randint(0,100) > 90:
                 print("Lost packet from receiver to sender")
                 continue
+            '''
+            if random.randint(0, 100) > 80:
+                print("Corrupted pkt from receiver to sender")
+
+                corrupted_msg = "corr".encode()
+                corrupted_chksum = make_checksum(corrupted_msg)
+                corrupted_msg = "corrupted".encode()
+                receiver_data = corrupted_chksum + corrupted_msg
+                router_soc.sendto(receiver_data, sender_address)
+                continue
+
+
             router_soc.sendto(receiver_data, sender_address)
     except:
         print("Messages have stopped, exiting router")
@@ -117,8 +125,8 @@ def test():
     sender.start()
 
 def main():
-    test()
-    #test_with_router()
+    #test()
+    test_with_router()
 
 if __name__ == "__main__":
     main()
