@@ -54,11 +54,10 @@ def run_router(ip, sender_port, receiver_port):
     try:
         while True:
             sender_data, sender_address = router_soc.recvfrom(4096)
-            '''if random.randint(0,100) > 90:
+            if random.randint(0,100) > 90:
                 print("Lost packet from sender to receiver")
                 continue
-            '''
-            if random.randint(0, 100) > 80:
+            elif random.randint(0, 100) > 80:
                 print("Corrupted pkt from sender to receiver")
 
                 corrupted_msg = "corr".encode()
@@ -71,11 +70,11 @@ def run_router(ip, sender_port, receiver_port):
 
             router_soc.sendto(sender_data, (ip,receiver_port))
             receiver_data, receiver_address = router_soc.recvfrom(4096)
-            '''if random.randint(0,100) > 90:
+            if random.randint(0,100) > 90:
                 print("Lost packet from receiver to sender")
                 continue
-            '''
-            if random.randint(0, 100) > 80:
+
+            elif random.randint(0, 100) > 80:
                 print("Corrupted pkt from receiver to sender")
 
                 corrupted_msg = "corr".encode()
