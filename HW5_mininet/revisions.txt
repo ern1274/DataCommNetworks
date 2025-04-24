@@ -1,0 +1,29 @@
+commit 49b08c28990cdf0d1c1cb9de3aca43689e5d3bcd
+Author: Ethan Nunez <ern1274@rit.edu>
+Date:   Thu Apr 24 11:49:14 2025 -0400
+
+    Added report
+
+commit 57dfa3682e18549a0d6fe2209f9f8d33977e20fb
+Author: Ethan Nunez <ern1274@rit.edu>
+Date:   Thu Apr 24 11:48:17 2025 -0400
+
+    Added documentation
+
+commit 4fd51117cf59d6a8c13ca02fc134b1cc8363f057
+Author: Ethan Nunez <ern1274@rit.edu>
+Date:   Wed Apr 23 13:00:46 2025 -0400
+
+    Added rules and routes for router and hosts respectively
+
+commit 5b21e8ce0a0c694db2686aa0971672aa6f9cf894
+Author: Ethan Nunez <ern1274@rit.edu>
+Date:   Tue Apr 22 11:54:01 2025 -0400
+
+    Modified code and completed task 2
+
+commit 6b6cc7871d48e22d8318d80bba37a59e53e9330b
+Author: Ethan Nunez <ern1274@rit.edu>
+Date:   Sun Apr 20 19:52:35 2025 -0400
+
+    Setup for homework 5
