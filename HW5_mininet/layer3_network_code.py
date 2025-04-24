@@ -3,7 +3,11 @@ from mininet.net import Mininet
 from mininet.node import Controller
 from mininet.cli import CLI
 
-def subnet():
+def setup_net():
+    """
+    A function that sets up mininet topography
+    3 switches with 2 hosts each and 1 router/host connecting everything
+    """
     net = Mininet(controller=Controller, waitConnected=True)
 
     info('*** Adding controller\n')
@@ -51,4 +55,4 @@ def subnet():
 
 if __name__ == '__main__':
     setLogLevel( 'info' )
-    subnet()
+    setup_net()
